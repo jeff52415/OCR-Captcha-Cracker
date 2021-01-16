@@ -3,13 +3,12 @@ from setuptools import find_packages, setup
 
 
 dev_requires = [
-    'matplotlib>=3.3.0',
-    'jupyter',
+    "jupyter",
+    "matplotlib>=3.3.0",
+    "pandas==1.1.2",
 ]
 
-serving_requires = [
-    "flask==1.1.2"
-]
+serving_requires = ["flask==1.1.2"]
 
 lint_requires = [
     "black==19.10b0",
@@ -25,27 +24,26 @@ test_requires = [
 ]
 
 setup(
-    name='OCR-Captcha-Cracker',
-    version='0.1.0',
+    name="OCR-Captcha-Cracker",
+    version="0.1.0",
     include_package_data=True,
     packages=find_packages(exclude=["examples"]),
     install_requires=[
-        'pandas==1.1.2',
-        'numpy==1.19.1',
-        'torch==1.6.0',
-        'torchvision==0.7.0',
-        'tqdm==4.48.2',
-        'Pillow==6.2.2',
-        'pytorch-crf==0.7.2',
-        'tensorboard>=2.4.0',
-        'captcha==0.3',
-        'editdistance==0.3.1',
+        "captcha==0.3",
+        "editdistance==0.3.1",
+        "numpy==1.19.1",
+        "Pillow==6.2.2",
+        "pytorch-crf==0.7.2",
+        "tensorboard>=2.4.0",
+        "torch==1.6.0",
+        "torchvision==0.7.0",
+        "tqdm==4.48.2",
     ],
     python_requires=">=3.6",
     extras_require={
         "serving": serving_requires,
         "dev": dev_requires + serving_requires + lint_requires + test_requires,
         "lint": lint_requires,
-        "test": serving_requires + test_requires
-    }
+        "test": serving_requires + test_requires,
+    },
 )
