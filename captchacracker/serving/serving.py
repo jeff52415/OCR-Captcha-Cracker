@@ -1,7 +1,11 @@
-from flask import Flask, request
-from captchacracker.model import CaptchaCracker
-import numpy as np
 from tempfile import NamedTemporaryFile
+
+import numpy as np
+
+from flask import Flask, request
+
+from captchacracker.model import CaptchaCracker
+
 
 def main():
 
@@ -19,11 +23,10 @@ def main():
     # close temp file
     tmp_file.close()
 
-    resp = {
-        "result": output
-    }
+    resp = {"result": output}
 
     return resp
+
 
 if __name__ == "__main__":
     app = Flask("serving")
