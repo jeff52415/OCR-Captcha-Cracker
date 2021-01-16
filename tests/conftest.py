@@ -1,6 +1,8 @@
 import random
 import string
 
+from pathlib import Path
+
 import pytest
 
 from captcha.image import ImageCaptcha
@@ -23,3 +25,9 @@ def img(random_str):
     img = generator.generate_image(random_str)
 
     return img
+
+
+@pytest.fixture()
+def test_assets():
+    test_assets = Path(__file__).resolve().parent.joinpath("assets")
+    return test_assets
