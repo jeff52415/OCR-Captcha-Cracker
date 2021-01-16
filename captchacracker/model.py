@@ -1,5 +1,4 @@
 import torch
-import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
 import numpy as np
@@ -10,8 +9,8 @@ import editdistance
 import logging
 import os
 import torchvision.models as models
-import matplotlib.pyplot as plt
 import PIL
+from PIL import Image
 
 from torch.utils.tensorboard import SummaryWriter
 from tqdm import tqdm
