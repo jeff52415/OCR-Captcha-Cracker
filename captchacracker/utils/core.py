@@ -1,13 +1,15 @@
+import os
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torchvision.models as models
-import os
 
 
 class ConvLayer(nn.Module):
-    def __init__(self, in_channels, out_channels, kernel_size, stride, padding,
-                 dropout_rate):
+    def __init__(
+        self, in_channels, out_channels, kernel_size, stride, padding, dropout_rate
+    ):
         super(ConvLayer, self).__init__()
         self.conv = nn.Sequential(
             nn.Conv2d(
@@ -17,8 +19,11 @@ class ConvLayer(nn.Module):
                 stride=stride,
                 padding=padding,
                 bias=False,
-            ), nn.BatchNorm2d(out_channels), nn.LeakyReLU(inplace=True),
-            nn.Dropout(p=dropout_rate))
+            ),
+            nn.BatchNorm2d(out_channels),
+            nn.LeakyReLU(inplace=True),
+            nn.Dropout(p=dropout_rate),
+        )
 
     def forward(self, x):
         out = self.conv(x)
@@ -72,25 +77,22 @@ class ImageFeatureExtractorLighter(nn.Module):
 
 
 class BiRNN(torch.nn.Module):
-    def __init__(self,
-                 input_size,
-                 hidden_size,
-                 num_layers,
-                 num_classes,
-                 drop=0.3):
+    def __init__(self, input_size, hidden_size, num_layers, num_classes, drop=0.3):
         super(BiRNN, self).__init__()
-        self.GRU = torch.nn.GRU(input_size,
-                                hidden_size,
-                                num_layers,
-                                batch_first=False,
-                                dropout=drop,
-                                bidirectional=True)
-        self.fc = torch.nn.Linear(hidden_size * 2,
-                                  num_classes)  # 2 for bidirection
+        self.GRU = torch.nn.GRU(
+            input_size,
+            hidden_size,
+            num_layers,
+            batch_first=False,
+            dropout=drop,
+            bidirectional=True,
+        )
+        self.fc = torch.nn.Linear(hidden_size * 2, num_classes)  # 2 for bidirection
 
     def forward(self, x):
         out, _ = self.GRU(
-            x)  # out: tensor of shape (seq_length, batch_size, hidden_size*2)
+            x
+        )  # out: tensor of shape (seq_length, batch_size, hidden_size*2)
         # Decode the hidden state of the last time step
         out = self.fc(out)
         return out
@@ -99,7 +101,7 @@ class BiRNN(torch.nn.Module):
 class CRNN(nn.Module):
     def __init__(self, cnn_backbone, backbone, num_classes=37):
         super(CRNN, self).__init__()
-        if backbone == 'light':
+        if backbone == "light":
             self.feature_extractor = ImageFeatureExtractorLighter()
         else:
             self.feature_extractor = ImageFeatureExtractor(cnn_backbone)
@@ -118,12 +120,13 @@ class CRNN(nn.Module):
 
     def load_weights(self, base_file):
         other, ext = os.path.splitext(base_file)
-        if ext == '.pkl' or '.pth':
-            print('Loading weights into state dict...')
+        if ext == ".pkl" or ".pth":
+            print("Loading weights into state dict...")
             self.load_state_dict(
-                torch.load(base_file,
-                           map_location=lambda storage, loc: storage)
-                ['model_state_dict'])
-            print('Finished!')
+                torch.load(base_file, map_location=lambda storage, loc: storage)[
+                    "model_state_dict"
+                ]
+            )
+            print("Finished!")
         else:
-            print('Sorry only .pth and .pkl files supported.')
+            print("Sorry only .pth and .pkl files supported.")

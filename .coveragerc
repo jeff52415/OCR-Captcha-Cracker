@@ -1,0 +1,6 @@
+[run]
+branch = True
+source = captchacracker
+
+[html]
+directory = test_reports/coverage
