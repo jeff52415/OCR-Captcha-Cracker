@@ -12,7 +12,7 @@ Please clone this repo and install by using following command:
 ```shell
 git clone https://github.com/jeff52415/OCR-Captcha-Cracker.git
 cd OCR-Captcha-Cracker
-pip install -r .
+pip install -e .
 ```
 
 To install other development dependencies, you need to use this command:
