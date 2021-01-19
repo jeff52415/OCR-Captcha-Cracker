@@ -30,7 +30,7 @@ setup(
     packages=find_packages(exclude=["examples"]),
     install_requires=[
         "captcha==0.3",
-        "editdistance==0.3.1",
+        "editdistance==0.5.3",
         "numpy==1.19.1",
         "Pillow==6.2.2",
         "pytorch-crf==0.7.2",
