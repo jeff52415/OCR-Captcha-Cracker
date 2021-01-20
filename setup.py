@@ -44,10 +44,10 @@ setup(
     ],
     python_requires=">=3.6",
     extras_require={
-        "serving": serving_requires,
-        "dev": dev_requires + serving_requires + lint_requires + test_requires,
-        "lint": lint_requires,
-        "test": serving_requires + test_requires,
+        "serving": serving_requires + torch_requires,
+        "dev": dev_requires + serving_requires + lint_requires + test_requires + torch_requires,
+        "lint": lint_requires + torch_requires,
+        "test": serving_requires + test_requires + torch_requires,
         "torch": torch_requires,
     },
 )
