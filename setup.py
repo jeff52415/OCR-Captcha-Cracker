@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 from setuptools import find_packages, setup
 import platform
+import subprocess
 import warnings
+import re
 
 def get_cuda_win_pkg_url(package_name, version):
 
