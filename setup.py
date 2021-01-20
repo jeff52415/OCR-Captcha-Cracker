@@ -6,8 +6,7 @@ import warnings
 import re
 
 def get_cuda_win_pkg_url(package_name, version):
-
-    cuda_ver_list = ["92", "100", "101", "102"]
+    "get dowload url for torch/torchvision package on windows system"
 
     if package_name == "torch":
         base_link = {
@@ -19,61 +18,14 @@ def get_cuda_win_pkg_url(package_name, version):
             "gpu": "https://download.pytorch.org/whl/cu<cuda_ver>/torchvision-<version>%2Bcu<cuda_ver>-cp36-cp36m-win_amd64.whl",
             "cpu": "https://download.pytorch.org/whl/cpu/torchvision-<version>%2Bcpu-cp36-cp36m-linux_x86_64.whl",
         }
-
-    try:
-        our_cuda_ver = get_cuda_version()
-    except RuntimeError:
-        # Handle RuntimeError: Cuda not found.
-        use_gpu = False
-        warnings.warn(f"Couldn't found cuda installed. Install cpu version of {package_name} instead", DeprecationWarning)
-
-    else:
-        use_gpu = True
-        # Remove version dot
-        our_cuda_ver = our_cuda_ver.replace(".", "")
-        # Remove all the version newer than our cuda version
-        cuda_ver_list = cuda_ver_list[: cuda_ver_list.index(our_cuda_ver) + 1]
-
-    if use_gpu:
-        for cuda_ver in reversed(cuda_ver_list):
-            url = base_link["gpu"]
-            url = url.replace("<cuda_ver>", cuda_ver).replace("<version>", version)
-            if check_file_link_exists(url):
-                return url
-        warnings.warn( f"Couldn't found package with cuda version {our_cuda_ver} matched with {package_name} {version}, install cpu version instead.", DeprecationWarning)
-
+        
     url = base_link["cpu"]
     url = url.replace("<version>", version)
     return url
 
-def get_cuda_version():
-    try:
-        cuda_report = str(subprocess.check_output(["nvcc", "--version"]))
-    except FileNotFoundError:
-        # Handle FileNotFoundError: [Errno 2] No such file or directory: 'nvcc': 'nvcc'
-        raise RuntimeError("Cuda not found.")
-    reg = re.search(r"release (\d*.\d*),", cuda_report)
-    if reg is not None:
-        return reg.group(1)
-    else:
-        return None
-
-def check_file_link_exists(url):
-    try:
-        _, headers = urllib.request.urlretrieve(url)
-    except HTTPError:
-        # Handle urllib.error.HTTPError: HTTP Error 403: Forbidden
-        return False
-
-    content_type = headers["Content-Type"]
-
-    if content_type == "binary/octet-stream":
-        return True
-    else:
-        return False
-
-
 def torch_urls(version):
+    "get torch version based on system type"
+    
     platform_system = platform.system()
     if platform_system == "Windows":
         return get_cuda_win_pkg_url("torch", version)
@@ -81,6 +33,8 @@ def torch_urls(version):
 
 
 def torchvision_urls(version):
+    "get torchvision version based on system type"
+    
     platform_system = platform.system()
     if platform_system == "Windows":
         return get_cuda_win_pkg_url("torchvision", version)
