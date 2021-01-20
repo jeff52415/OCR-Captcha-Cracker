@@ -21,6 +21,12 @@ To install other development dependencies, you need to use this command:
 pip install -e .["dev"]
 ```
 
+If you are using Windows, please install with following command:
+
+```shell
+pip install -e .["dev"] -f https://download.pytorch.org/whl/torch_stable.html
+```
+
 ## Information
 
 

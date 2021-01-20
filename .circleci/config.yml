@@ -1,0 +1,40 @@
+version: 2.1
+
+orbs:
+  win: circleci/windows@2.2.0
+
+jobs:
+  build-and-test:
+    docker:
+      - image: circleci/python:3.8
+    steps:
+      - checkout
+      - run:
+          command: pip install -e .["test"]
+          name: Install Deps
+      - run:
+          command: pytest
+          name: Test
+  build-and-test-win:
+    executor: win/default # executor type
+    steps:
+      # Commands are run in a Windows virtual machine environment
+      - checkout
+      - run:
+          command: |
+            $client = new-object System.Net.WebClient
+            $client.DownloadFile("https://www.python.org/ftp/python/3.8.7/python-3.8.7-amd64.exe","C:\tmp\python-3.8.7-amd64.exe")
+            C:\tmp\python-3.8.7-amd64.exe /quiet InstallAllUsers=1 PrependPath=1 Include_test=0
+          name: Install Python
+      - run:
+          command: pip install -e .["test"] -f https://download.pytorch.org/whl/torch_stable.html
+          name: Install Deps
+      - run:
+          command: pytest
+          name: Test
+
+workflows:
+  main:
+    jobs:
+      - build-and-test
+      - build-and-test-win
