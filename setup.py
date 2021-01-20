@@ -44,6 +44,17 @@ def get_cuda_win_pkg_url(package_name, version):
     url = url.replace("<version>", version)
     return url
 
+def get_cuda_version():
+    try:
+        cuda_report = str(subprocess.check_output(["nvcc", "--version"]))
+    except FileNotFoundError:
+        # Handle FileNotFoundError: [Errno 2] No such file or directory: 'nvcc': 'nvcc'
+        raise RuntimeError("Cuda not found.")
+    reg = re.search(r"release (\d*.\d*),", cuda_report)
+    if reg is not None:
+        return reg.group(1)
+    else:
+        return None
 
 def check_file_link_exists(url):
     try:
