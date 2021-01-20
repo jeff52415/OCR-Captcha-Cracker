@@ -10,18 +10,19 @@ from captchacracker.model import CaptchaCracker
 def main():
 
     # Create temp file
-    tmp_file = NamedTemporaryFile()
+    tmp_file = NamedTemporaryFile(delete=False)
 
     # Receive uploaded file and save to temp file
     img = request.files.get("image")
     img.save(tmp_file)
 
+    # close temp file
+    tmp_file.close()
+
     # Load model and inference
     model = CaptchaCracker(weight_path="weight/normal.pth", backbone="normal")
     output = model.process(tmp_file.name)
 
-    # close temp file
-    tmp_file.close()
 
     resp = {"result": output}
 
