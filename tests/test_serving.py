@@ -16,7 +16,7 @@ def test_client(app):
     return app.test_client()
 
 
-def test_serving(app, test_client, test_assets):
+def test_serving(app, test_client, test_assets, normal_weight):
     app.add_url_rule("/", "serving", main, methods=["POST"])
 
     data = {
