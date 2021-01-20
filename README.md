@@ -13,7 +13,7 @@ Please clone this repo and install by using following command:
 git clone https://github.com/jeff52415/OCR-Captcha-Cracker.git
 cd OCR-Captcha-Cracker
 
-## mac / Linux
+## OSX / Linux
 pip install -e .["torch"]
 
 ## windows
