@@ -23,6 +23,11 @@ test_requires = [
     "tox==3.15.1",
 ]
 
+torch_requires = [
+    "torch>=1.6.0",
+    "torchvision>=0.7.0",
+]
+
 setup(
     name="OCR-Captcha-Cracker",
     version="0.1.0",
@@ -35,8 +40,6 @@ setup(
         "Pillow==6.2.2",
         "pytorch-crf==0.7.2",
         "tensorboard>=2.4.0",
-        "torch>=1.6.0",
-        "torchvision>=0.7.0",
         "tqdm==4.48.2",
     ],
     python_requires=">=3.6",
@@ -45,5 +48,6 @@ setup(
         "dev": dev_requires + serving_requires + lint_requires + test_requires,
         "lint": lint_requires,
         "test": serving_requires + test_requires,
+        "torch": torch_requires,
     },
 )

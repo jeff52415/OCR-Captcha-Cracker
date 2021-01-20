@@ -12,8 +12,15 @@ Please clone this repo and install by using following command:
 ```shell
 git clone https://github.com/jeff52415/OCR-Captcha-Cracker.git
 cd OCR-Captcha-Cracker
+
+## mac / Linux
+pip install -e .["torch"]
+
+## windows
 pip install -e .
+pip install torch==1.6.0+cpu torchvision==0.7.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
 ```
+
 
 To install other development dependencies, you need to use this command:
 
